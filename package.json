@@ -1,0 +1,23 @@
+{
+  "name": "tp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luemmago/https---github.com-luemmago-2da-Pre-entrega-GONZALEZ.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luemmago/https---github.com-luemmago-2da-Pre-entrega-GONZALEZ/issues"
+  },
+  "homepage": "https://github.com/luemmago/https---github.com-luemmago-2da-Pre-entrega-GONZALEZ#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
