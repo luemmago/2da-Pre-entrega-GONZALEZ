@@ -4,10 +4,21 @@ import morgan from 'morgan'
 import error_handler from './middlewares/error_handler.js'
 import not_found_handler from './middlewares/not_found_handler.js'
 import index_router from './router/index.js';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
 
 const server = express()
 
 //middleware
+server.use(session ({
+    secret: process.env.SECRET_SESSION,
+    resave: true,
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: process.env.LINK_MONGO,
+        ttl: 10000
+    })
+}))
 server.use('/', express.static('public'))
 server.use('/otra', express.static('otra'))
 server.use(express.json())
