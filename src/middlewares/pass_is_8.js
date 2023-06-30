@@ -5,7 +5,7 @@ function pass_is_8 (res,req,next) {
 
     }
     return res.status(400).json({
-        success: true,
+        success: false,
         message: 'la contraseña no puede tener mas de 8 caracteres'
 
     })
