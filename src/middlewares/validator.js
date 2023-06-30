@@ -5,6 +5,8 @@ function validator (req,res,next) {
             success: false,
             message: 'name - password - email are required'
         })
+    } else {
+        next()
     }
 }
 
