@@ -1,10 +1,11 @@
 import { Router } from "express";
 import User from '../models/User'
+import validator from "../middlewares/validator";
 
 const auth_router = Router()
 
 //register routes
-auth_router.post('/register',async (req, res,next) => {
+auth_router.post('/register',validator,async (req, res,next) => {
     try {
         await User.create(req.body)
         return res.status(201).json({
