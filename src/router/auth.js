@@ -4,6 +4,7 @@ import validator_register from "../middlewares/validator.js";
 import validator_signin from "../middlewares/validator_Signin.js"
 import pass_is_8 from "../middlewares/pass_is_8.js";
 import isValidPassword from "../middlewares/isValidPassword.js";
+import passport from "passport";
 
 const auth_router = Router()
 
@@ -12,17 +13,17 @@ auth_router.post('/register',
     validator_register,
     pass_is_8,
     create_hash,
-    async (req, res, next) => {
-        try {
-            await User.create(req.body)
-            return res.status(201).json({
-                success: true,
-                message: 'user created!'
-            })
-        } catch (error) {
-            next(error)
-        }
+    passport.authenticate(
+        'register',
+        { failureRedirect: '' }
+    ),
+    (req, res,) => res.status(201).json({
+        success: true,
+        message: 'user created!'
     })
+
+        
+)
 
 auth_router.post('/signin',
     validator_signin,
