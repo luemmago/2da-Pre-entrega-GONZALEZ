@@ -17,5 +17,3 @@ document.getElementById('register').addEventListener('click', (event) => {
         .then(res => console.log(res))    //en lugar de imprimir en consola: mostrar mensaje de alerta
         .catch(err => console.log(err))   //en lugar de imprimir en consola: mostrar mensaje de alerta
 })
-
-export default register 
