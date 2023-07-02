@@ -1,7 +1,7 @@
 document.getElementById('login_button').addEventListener('click', (event) => {
     event.preventDefault()
     let data = {
-        mail: document.querySelector('#mail').value,
+        email: document.querySelector('#mail').value,
         password: document.querySelector('#password').value,
     }
 
