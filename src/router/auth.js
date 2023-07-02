@@ -22,10 +22,10 @@ auth_router.post('/register',
         message: 'user created!'
     })
 
-        
+
 )
 
-auth_router.get('/fail-register',(req,res) => res.status(400).json({
+auth_router.get('/fail-register', (req, res) => res.status(400).json({
     success: false,
     message: 'error auth'
 }))
@@ -33,28 +33,29 @@ auth_router.get('/fail-register',(req,res) => res.status(400).json({
 auth_router.post('/signin',
     validator_signin,
     pass_is_8,
+    passport.authenticate('signin', { failureRedirect: '/api/auth/fail-signin' }),
     isValidPassword,
-    async (req, res, next) => {
+    (req, res, next) => {
         try {
-            const { mail } = req.body
-            const one = await User.findOne({ email })
-            if (one) {
-                req.session.email = email
-                req.session.role = one.role
-                return res.status(200).json({
-                    success: true,
-                    message: 'user signed in!'
-                })
-            } else {
-                return res.status(404).json({
-                    success: false,
-                    message: 'User not found'
-                })
-            }
+            const { email } = req.body
+            req.session.email = email
+            req.session.role = req.user.role
+            return res.status(200).json({
+                success: true,
+                message: 'user signed in!'
+            })
+
+
         } catch (error) {
             next(error)
         }
-    })
+    }
+)
+
+auth_router.get('/fail-signin', (req, res) => res.status(400).json({
+    success: false,
+    message: 'error auth'
+}))
 
 //sinout
 auth_router.post('signout', (req, res, next) => {
