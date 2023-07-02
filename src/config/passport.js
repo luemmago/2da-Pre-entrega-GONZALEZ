@@ -5,7 +5,7 @@ import User from "../models/User.js"
 const { GH_CLIENT, GH_SECRET } = process.env
 const githubCb = 'http://localhost:8080/api/auth/github/callback'
 
-export default function inicializePassport() {
+export default function () {
     passport.use(
         'github',
         new GHStrategy(
