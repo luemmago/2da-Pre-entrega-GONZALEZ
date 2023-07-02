@@ -4,13 +4,19 @@ document.getElementById('login').addEventListener('click', (event) => {
         mail: document.querySelector('#mail').value,
         password: document.querySelector('#password').value,
     }
-    console.log(data)
-    fetch(`/api/auth/login`, {
+
+    fetch(`/api/auth/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
     })
-        .then(res => res.json())
-        .then(res => console.log(res))    //en lugar de imprimir en consola: mostrar mensaje de alerta
-        .catch(err => console.log(err))   //en lugar de imprimir en consola: mostrar mensaje de alerta
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            alert(res.message)
+            window.location.replace('/')
+        } else {
+            alert(res.message)
+        }
+    })
 })
