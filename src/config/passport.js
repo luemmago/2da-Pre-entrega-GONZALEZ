@@ -37,14 +37,14 @@ export default function inicializePassport() {
             { passReqToCallback: true, usernameField: 'email' },
             async (req, userName, password, done) => {
                 try {
-                    let one = await User.findOne({ email: userName })
+                    let one = await User.findOne({ email: username })
                     if (!one) {
                         let user = await User.create(req.body)
                         return done(null, user)
                     }
                     return done(null, false)
                 } catch (error) {
-                    return done(error)
+                    return done(error,false)
                 }
             }
         )
@@ -55,7 +55,7 @@ export default function inicializePassport() {
             { usernameField: 'email' },
             async (userName, password, done) => {
                 try {
-                    let one = await User.findOne({ email: userName })
+                    let one = await User.findOne({ email: username })
                     if (one) {
                         return done(null, one)
                     }

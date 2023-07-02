@@ -15,7 +15,7 @@ auth_router.post('/register',
     create_hash,
     passport.authenticate(
         'register',
-        { failureRedirect: '' }
+        { failureRedirect: '/api/auth/fail-register' }
     ),
     (req, res,) => res.status(201).json({
         success: true,
@@ -24,6 +24,11 @@ auth_router.post('/register',
 
         
 )
+
+auth_router.get('/fail-register',(req,res) => res.status(400).json({
+    success: false,
+    message: 'error auth'
+}))
 
 auth_router.post('/signin',
     validator_signin,
