@@ -5,7 +5,7 @@ export default function createHash(req, res, next) {
     const hashPassword = hashSync
     req.body.password = hashSync(
         password, // defino la contraseña a has
-        genSaltSync() //defino nivel de protection
+        genSaltSync(10) //defino nivel de protection
     )
     req.body.password = hashPassword
     return next()
