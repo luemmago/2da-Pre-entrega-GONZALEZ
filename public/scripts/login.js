@@ -1,4 +1,4 @@
-document.getElementById('login').addEventListener('click', (event) => {
+document.getElementById('login_button').addEventListener('click', (event) => {
     event.preventDefault()
     let data = {
         mail: document.querySelector('#mail').value,
