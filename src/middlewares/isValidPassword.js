@@ -10,11 +10,11 @@ export default async function isValidPassword(req, res, next) {
         )
         if (verified) {
             return next()
-        } else{
-            return res.status(401).json({
-                success: false,
-                message: 'error de autenticación!'
-            })
         }
+        return res.status(401).json({
+            success: false,
+            message: 'error de autenticación!'
+        })
+        
     }
 }
