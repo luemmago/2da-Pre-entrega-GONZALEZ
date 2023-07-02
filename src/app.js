@@ -36,8 +36,3 @@ server.use(error_handler)
 server.use(not_found_handler)
 
 
-
-
-
-
-export default server
