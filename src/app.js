@@ -6,6 +6,8 @@ import not_found_handler from './middlewares/not_found_handler.js'
 import index_router from './router/index.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import passport from 'passport.js';
+import inicializePassport from './config/passport.js';
 
 const server = express()
 
@@ -24,6 +26,10 @@ server.use('/otra', express.static('otra'))
 server.use(express.json())
 server.use(express.urlencoded({ extended:true}))
 server.use(morgan('dev'))
+inicializePassport()
+server.use(passport.initialize())
+server.use(passport.session())
+
 
 server.use('/api',index_router)
 server.use(error_handler)
