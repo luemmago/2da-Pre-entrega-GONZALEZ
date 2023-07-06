@@ -11,4 +11,6 @@ router.use('/carts', carts_router)
 router.use('/auth', auth_router)
 index_router.use('/api',api_router) //enrutador de rutas que respondan con json (datos)
 
+
 export default index_router
+
