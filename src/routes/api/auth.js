@@ -1,9 +1,9 @@
 import { Router } from "express";
-import User from '../models/User.js'
+import User from '../../models/User.js'
 import validator_register from "../middlewares/validator.js";
-import validator_signin from "../middlewares/validator_Signin.js"
-import pass_is_8 from "../middlewares/pass_is_8.js";
-import isValidPassword from "../middlewares/isValidPassword.js";
+import validator_signin from "../../middlewares/validator_Signin.js"
+import pass_is_8 from "../../middlewares/pass_is_8.js";
+import isValidPassword from "../../middlewares/isValidPassword.js";
 import passport from "passport";
 
 const auth_router = Router()

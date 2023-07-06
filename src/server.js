@@ -1,12 +1,19 @@
 import server from "./app.js"
-import { connect } from "mongoose";
+import { Server } from "socket.io"
+import cart_manager from "./managers/Cart.js"
 
-const port = process.env.PORT || 8080
-const ready = () => {
-    console.log('server ready on port ' + port);
-    connect(process.env.LINK_MONGO)
-        .then(() => console.log('connected to database'))
-        .catch(err => console.log(err))
-}
+const PORT = process.env.PORT || 8080
+const ready = ()=> console.log('server ready on port '+PORT)
 
-server.listen(port, ready)
+let http_server = server.listen(PORT,ready)
+let socket_server = new Server(http_server)
+
+socket_server.on(       //on sirve para escuchar los mensajes que llegan (en este caso del cliente)
+    'connection',       //identificador del mensaje a escuchar (el primero siempre connection)
+    socket => {         //callback que se va a ejecutar apenas se conecta un cliente
+        //console.log(socket)
+        console.log(`client ${socket.client.id} connected`)
+        socket.emit('change_quantity',cart_manager.read_cart(1).products.length)
+        socket.on('upd_cart', ()=> socket_server.emit('change_quantity',cart_manager.read_cart(1).products.length))
+    }
+)
