@@ -2,7 +2,7 @@ import express from 'express'
 import 'dotenv/config.js'
 import { connect } from 'mongoose'
 import morgan from 'morgan'
-import router from './router/index.js'
+import router from './routes/index.js'
 import error_handler from './middlewares/error_handler.js'
 import not_found_handler from './middlewares/not_found_handler.js'
 import session from 'express-session';
@@ -38,5 +38,9 @@ server.use('/', router)
 server.use('/api',index_router)
 server.use(error_handler)
 server.use(not_found_handler)
-
+ 
+connect('mongodb+srv://lemmanuelgonzalez92:hola1234@cinema.1qrpzvs.mongodb.net/cinema')
+    .then(()=>console.log('database connected'))
+    .catch(err => console.log(err))
+export default server
 
