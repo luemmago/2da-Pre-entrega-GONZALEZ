@@ -5,22 +5,26 @@ import User from "../models/User.js"
 const { GH_CLIENT, GH_SECRET } = process.env
 const githubCb = 'http://localhost:8080/api/auth/github/callback'
 
-export default function inicializePassport() {
+
+
+const { GH_APP_ID, GH_CLIENT_ID, GH_CLIENT_SECRET } = process.env
+const callback = "http://localhost:8080/api/auth/github/callback"
+
+export default function () {
     passport.use(
         'github',
         new GHStrategy(
-            { clientID: GH_CLIENT, clientSecret: GH_SECRET, callbackURL: githubCb },
+            { clientID: GH_CLIENT_ID, clientSecret: GH_CLIENT_SECRET, callbackURL: githubCb },
             async (accessToken, refreshToken, profile, done) => {
                 try {
                     //console.log(profile)
                     let one = await User.findOne({ email: profile._json.login })
-                    if (!one) {
+                    if (one) {
                         let user = await User.create({
                             name: profile._json.name,
                             email: profile._json.login,
-                            age: 18,
                             photo: profile._json.avatar_url,
-                            password: profile._json.id
+                            password: 'hola1234'
                         })
                         return done(null, user)
                     }
