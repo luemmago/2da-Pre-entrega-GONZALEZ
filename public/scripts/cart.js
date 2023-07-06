@@ -5,14 +5,14 @@ const cid = params.get('cid')
 
 async function fetchCart() {
     try {
-        let response = await fetch('/api/carts/'+cid)
+        let response = await fetch('/api/carts/' + cid)
         response = await response.json()
         //console.log(response)
         let templates = ''
         let total = 0
         for (let prod of response.cart.products) {
-            if (prod.quantity>0) {
-                let res = await fetch('/api/products/'+prod.pid)
+            if (prod.quantity > 0) {
+                let res = await fetch('/api/products/' + prod.pid)
                 res = await res.json()
                 //console.log(res)
                 total = total + prod.quantity * res.product.price
@@ -47,9 +47,9 @@ async function addUnits(pid) {
         })
         response = await response.json()
         //console.log(response);
-        if (response.status===200) {
-            location.replace('/cart.html?cid='+cid)
-        }else {
+        if (response.status === 200) {
+            location.replace('/cart.html?cid=' + cid)
+        } else {
             alert(response.message)
         }
     } catch (error) {
@@ -64,9 +64,9 @@ async function quitUnits(pid) {
         })
         response = await response.json()
         //console.log(response);
-        if (response.status===200) {
-            location.replace('/cart.html?cid='+cid)
-        }else {
+        if (response.status === 200) {
+            location.replace('/cart.html?cid=' + cid)
+        } else {
             alert(response.message)
         }
     } catch (error) {
