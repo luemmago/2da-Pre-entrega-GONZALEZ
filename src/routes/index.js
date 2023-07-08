@@ -1,8 +1,7 @@
 import { Router } from "express"
-import products_router from "./api/products"
-import api_router from './api/index.js'
-import carts_router from './api/carts'
-import auth_router from "./api/auth"
+import products_router from "./api/products.js"
+import carts_router from './api/carts.js'
+import auth_router from "./api/auth.js"
 
 const index_router = Router()
 

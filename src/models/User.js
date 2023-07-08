@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 const collection = 'users'
-const Schema = new Schema({
+const Schema = new Schema ({
     name: {type:string,required:true},
     photo: {type:string,default:'true'},
     email: {type:string,required:true, index:true,unique:true},
