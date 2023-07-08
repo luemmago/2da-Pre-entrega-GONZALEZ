@@ -10,3 +10,4 @@ function validator (req,res,next) {
     }
 }
 
+export default validator
