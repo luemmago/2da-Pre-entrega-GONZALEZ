@@ -3,7 +3,6 @@ import { Strategy } from "passport-local"
 import GHStrategy from "passport-github2"
 import jwt from "passport-jwt"
 import User from "../models/User.js"
-
 const { GH_CLIENT_ID, GH_CLIENT_SECRET } = process.env
 const callback = "http://localhost:8080/api/auth/github/callback"
 
@@ -106,4 +105,5 @@ export default function () {
             }
         )
     )
+    //passport.use()
 }

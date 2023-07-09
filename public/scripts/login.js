@@ -1,11 +1,15 @@
-document.getElementById('login_button').addEventListener('click', (event) => {
+document.getElementById('login').addEventListener('click', (event) => {
     event.preventDefault()
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+    console.log({email, password})
+
     let data = {
-        email: document.querySelector('#mail').value,
+        email: document.querySeleSctor('#email').value,
         password: document.querySelector('#password').value,
     }
 
-    fetch(`/api/auth/signin`, {
+    fetch('/api/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -18,5 +22,17 @@ document.getElementById('login_button').addEventListener('click', (event) => {
         } else {
             alert(res.message)
         }
+        
     })
+    .catch (err=>console.log(err))
+})
+
+document.getElementById('signout').addEventListener('click',(event)=> {
+    event.preventDefault()
+    fetch('/api/auth/signout',{
+        method: 'POST'
+    })
+        .then(res=>res.json())
+        .then(res=>alert(res.message))
+        .catch(err=>console.log(err))
 })
