@@ -1,93 +1,59 @@
 import { Router } from "express"
-
-import validatorRegister from "../../middlewares/validator_register.js"
-import validatorSignin from "../../middlewares/validator_Signin.js"
-import passIs8 from "../../middlewares/pass_is_8.js"
-import createHash from "../../middlewares/create_hash.js"
-import isValidPassword from "../../middlewares/isValidPassword.js"
-
 import passport from "passport"
-import generateToken from "../../middlewares/generateToken.js"
+import passwordIsok from "../../middlewares/passwordIsok.js"
+import createToken from "../../middlewares/generateToken.js"
+import createHash from "../../middlewares/create_hash.js"
+import passport_call from "../../middlewares/passport_call.js"
 
-const auth_router = Router()
+const router = Router()
 
-//REGISTER
-auth_router.post('/register',
-    validatorRegister,
-    passIs8,
+router.get('/github', passport.authenticate('github', { scope: ['user:email'] }), (req, res) => { })
+router.get(
+    '/github/callback',     //endpoint
+    passport.authenticate('github', { failureRedirect: '/api/auth/fail-register' }),   //middleware con estrategia de auth de github
+    (req, res) => res.status(200).redirect('/')
+)
+router.get('/fail-register', (req, res) => res.status(403).json({
+    success: false,
+    message: 'bad auth'
+}))
+
+router.post('/register',
     createHash,
-    passport.authenticate('register',{ failureRedirect:'/api/auth/fail-register' }),
-    (req,res)=> res.status(201).json({
-            success: true,
-            message: 'user created!',
-            passport: req.session.passport,
-            user: req.user
-    })
-)
-auth_router.get('/fail-register',(req,res)=> res.status(400).json({
-    success: false,
-    message: 'fail register!'
-}))
-
-//SIGNIN
-auth_router.post('/signin',
-    validatorSignin,
-    passIs8,
-    passport.authenticate('signin',{ failureRedirect:'/api/auth/fail-signin' }),
-    isValidPassword,
-    generateToken,
-    (req,res)=> {
-        req.session.email = req.user.email
-        req.session.role = req.user.role
-        return res.status(200).json({
-            success: true,
-            message: 'user signed in!',
-            passport: req.session.passport,
-            user: req.user,
-            token: req.token
-        })
-})
-auth_router.get('/fail-signin',(req,res)=> res.status(400).json({
-    success: false,
-    message: 'fail sign in!'
-}))
-
-//SIGNOUT
-auth_router.post('/signout',async(req,res,next)=>{
-    try {
-        if (req.session.email) {
-            req.session.destroy()
+    passport.authenticate('register', { failureRedirect: '/api/auth/fail-register' }),
+    async (req, res, next) => {
+        try {
             return res.status(200).json({
-                success: true,
-                message: 'user signed out!'
+                success: true, message: 'registered ok!'
             })
-        } else {
-            return res.status(404).json({
-                success: false,
-                message: 'user not found!'
-            })
+        } catch (error) {
+            return next(error)
         }
-    } catch (error) {
-        next(error)
-    }
-})
-
-//GH REGISTER
-auth_router.get('/github',
-    passport.authenticate('github',{ scope:['user:email'] }),
-    (req,res)=> res.status(201).json({
-            success: true,
-            message: 'user created!',
-            passport: req.session.passport,
-            user: req.user
-    })
-)
-auth_router.get('/github/callback',
-    passport.authenticate('github',{ failureRedirect:'/api/auth/fail-register' }),
-        (req,res)=> {
-            req.session.user = req.user
-            return res.redirect('/')
     }
 )
 
-export default auth_router
+router.post('/login'/* validator,strategy,password,token */,
+    passport.authenticate('login', { failureRedirect: '/api/auth/fail-login' }),
+    passwordIsok,
+    createToken,
+    async (req, res, next) => {
+        try {
+            return res.status(200).cookie('token', req.token, { maxAge: 60 * 60 * 1000 }).json({
+                success: true, message: 'logged in!'
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+)
+router.get('/fail-login', (req, res) => res.status(401).json({
+    success: false,
+    message: 'bad auth'
+}))
+
+router.post('/signout', passport_call('jwt', { session: false }), (req, res) => res.status(200).clearCookie('token').json({
+    success: true,
+    message: 'siggned out!'
+}))
+
+export default router
